@@ -1,4 +1,3 @@
-import math
 import statistics
 
 min_price = 1.0
@@ -44,17 +43,15 @@ def expensive_purchases(purchases : dict, min_price: float) -> list:
 def average_price_by_category(purchases: dict) -> dict:
     avg_price_by_category = {}
     prices_by_category = create_dict_by_category(purchases, 'price')
-    for i in purchases:
-        avg_price_by_category[i['category']] = prices_by_category.get(i['category'], 0.0)
-        avg_price_by_category[i.get('category')] = float(statistics.mean(prices_by_category[i.get('category')]))
+    for key, value in prices_by_category.items():
+        avg_price_by_category[key] = float(statistics.mean(value))
     return avg_price_by_category
 
 def most_frequent_category(purchases: dict) -> str:
     sum_quantity_by_category = {}
     quantity_by_category = create_dict_by_category(purchases, 'quantity')
-    for i in purchases:
-        sum_quantity_by_category[i['category']] = quantity_by_category.get(i['category'], 0.0)
-        sum_quantity_by_category[i.get('category')] = math.fsum(quantity_by_category[i.get('category')])
+    for key, value in quantity_by_category.items():
+        sum_quantity_by_category[key] = float(sum(value))
     return max(sum_quantity_by_category, key=sum_quantity_by_category.get)
 
 print("Общая выручка: {:.1f}".format(total_revenue(purchases)))
