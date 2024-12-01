@@ -19,15 +19,14 @@ purchases = [
 def create_dict_by_category(purchases: dict, field: str) -> dict:
     dict_by_category = {}
     for i in purchases:
-        dict_by_category[i['category']] = dict_by_category.get(i['category'], [])
-        dict_by_category[i.get('category')].append(i[field])
+        dict_by_category.setdefault(i["category"], []).append(i[field])
     return dict_by_category
 
 def total_revenue(purchases: dict) -> float:
     summa = 0
     for i in purchases:
-        summa += i['price']
-    return round(summa * len(purchases))
+        summa += i['quantity']*i['price']
+    return summa
 
 def items_by_category(purchases: dict) -> dict:
     unique_items_by_category = create_dict_by_category(purchases, 'item')
