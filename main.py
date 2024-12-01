@@ -17,6 +17,13 @@ purchases = [
     quantity — количество единиц, купленных за один раз.
 """
 
+def create_dict_by_category(purchases: dict, field: str) -> dict:
+    dict_by_category = {}
+    for i in purchases:
+        dict_by_category[i['category']] = dict_by_category.get(i['category'], [])
+        dict_by_category[i.get('category')].append(i[field])
+    return dict_by_category
+
 def total_revenue(purchases: dict) -> float:
     summa = 0
     for i in purchases:
@@ -24,10 +31,7 @@ def total_revenue(purchases: dict) -> float:
     return round(summa * len(purchases))
 
 def items_by_category(purchases: dict) -> dict:
-    unique_items_by_category = {}
-    for i in purchases:
-        unique_items_by_category[i['category']] = unique_items_by_category.get(i['category'], [])
-        unique_items_by_category[i.get('category')].append(i['item'])
+    unique_items_by_category = create_dict_by_category(purchases, 'item')
     return unique_items_by_category
 
 def expensive_purchases(purchases : dict, min_price: float) -> list:
@@ -38,22 +42,18 @@ def expensive_purchases(purchases : dict, min_price: float) -> list:
     return expensive_items
 
 def average_price_by_category(purchases: dict) -> dict:
-    prices_by_category = {}
     avg_price_by_category = {}
+    prices_by_category = create_dict_by_category(purchases, 'price')
     for i in purchases:
-        prices_by_category[i['category']] = prices_by_category.get(i['category'], [])
         avg_price_by_category[i['category']] = prices_by_category.get(i['category'], 0.0)
-        prices_by_category[i.get('category')].append(i['price'])
         avg_price_by_category[i.get('category')] = float(statistics.mean(prices_by_category[i.get('category')]))
     return avg_price_by_category
 
 def most_frequent_category(purchases: dict) -> str:
-    quantity_by_category = {}
     sum_quantity_by_category = {}
+    quantity_by_category = create_dict_by_category(purchases, 'quantity')
     for i in purchases:
-        quantity_by_category[i['category']] = quantity_by_category.get(i['category'], [])
         sum_quantity_by_category[i['category']] = quantity_by_category.get(i['category'], 0.0)
-        quantity_by_category[i.get('category')].append(i['quantity'])
         sum_quantity_by_category[i.get('category')] = math.fsum(quantity_by_category[i.get('category')])
     return max(sum_quantity_by_category, key=sum_quantity_by_category.get)
 
