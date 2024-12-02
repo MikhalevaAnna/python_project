@@ -29,7 +29,10 @@ def total_revenue(purchases: dict) -> float:
     return summa
 
 def items_by_category(purchases: dict) -> dict:
-    unique_items_by_category = create_dict_by_category(purchases, 'item')
+    unique_items_by_category = {}
+    purchases_by_category = create_dict_by_category(purchases, 'item')
+    for key, value in purchases_by_category.items():
+         unique_items_by_category[key] = list(sorted(set(value)))
     return unique_items_by_category
 
 def expensive_purchases(purchases : dict, min_price: float) -> list:
